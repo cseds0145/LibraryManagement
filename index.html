@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Grand Athenaeum • 3D Vintage Library & Archives</title>
+  <meta name="description" content="An immersive 3D vintage library management system with multi-genre stacks, turnable 3D open-book reader, and public domain archives." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="vintage-theme">
+  <!-- Atmospheric Overlays -->
+  <div class="ambient-glow"></div>
+  <div class="vintage-vignette"></div>
+
+  <div class="library-container">
+    <!-- Grand Library Header -->
+    <header class="library-header">
+      <div class="header-seal">
+        <div class="seal-inner">
+          <span class="seal-icon">🏛️</span>
+          <span class="seal-text">EST. 1894 • THE GRAND ATHENAEUM</span>
+        </div>
+      </div>
+      <div class="header-titles">
+        <span class="sub-heading">ARCHIVES, SPECIAL COLLECTIONS & PUBLIC DOMAIN REPOSITORY</span>
+        <h1 class="main-title">The Grand Athenaeum</h1>
+        <p class="tagline">An Interactive 3D Library of Classic Science Fiction, Comedy, Education & Golden Age Comics</p>
+      </div>
+      <div class="header-decor-border"></div>
+    </header>
+
+    <main class="library-main">
+      <!-- 1. AUTHENTICATION / REGISTRATION ACCESSION DESK -->
+      <section id="login-section" class="parchment-card auth-card">
+        <div class="card-brass-plate">
+          <span>LIBRARY ACCESSION & REGISTRATION DESK</span>
+        </div>
+
+        <div class="auth-mode-tabs">
+          <button type="button" id="tab-signin-mode" class="toggle-btn active">
+            <span>🔑 Member Sign-In</span>
+          </button>
+          <button type="button" id="tab-register-mode" class="toggle-btn">
+            <span>📜 Register New Library Card</span>
+          </button>
+        </div>
+
+        <div class="card-inner-frame">
+          <div class="wax-seal-badge">
+            <span>EX LIBRIS</span>
+          </div>
+
+          <h2 id="auth-title" class="vintage-heading">Member Sign-In</h2>
+          <p class="auth-subtext" id="auth-subtitle">Present your credentials to enter the library stacks & archives.</p>
+
+          <form id="login-form" class="vintage-form">
+            <div id="name-field" class="form-group hidden">
+              <label for="name">Full Scholar Name</label>
+              <input type="text" id="name" name="name" placeholder="e.g. Victor Frankenstein" />
+            </div>
+
+            <div class="form-group">
+              <label for="role">Select Member Status</label>
+              <div class="custom-select-wrapper">
+                <select id="role" name="role" required>
+                  <option value="student">🎓 Student Scholar</option>
+                  <option value="faculty">🏛️ Faculty Curator / Librarian</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="username">Library Identification / Username</label>
+              <input type="text" id="username" name="username" placeholder="e.g. student1 or faculty1" required />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Secret Passphrase / Password</label>
+              <input type="password" id="password" name="password" placeholder="••••••••" required />
+            </div>
+
+            <button type="submit" class="btn-vintage btn-brass" id="auth-submit-btn" style="width: 100%;">
+              <span class="btn-emboss" id="auth-btn-text">Enter The Stacks</span>
+            </button>
+
+            <!-- Quick 1-Click Preset Buttons -->
+            <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="text-align: center; font-family: var(--font-display); font-size: 0.74rem; color: var(--ink-faded); letter-spacing: 0.1em;">
+                ── OR QUICK ONE-CLICK SCHOLAR ENTRY ──
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" id="quick-student-btn" class="btn-vintage btn-wood" style="flex: 1; padding: 8px 10px; font-size: 0.75rem;">
+                  <span>🎓 Eleanor (Student)</span>
+                </button>
+                <button type="button" id="quick-faculty-btn" class="btn-vintage btn-wood" style="flex: 1; padding: 8px 10px; font-size: 0.75rem;">
+                  <span>🏛️ Dr. Finch (Faculty)</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="hint-box" style="margin-top: 14px;">
+              <div class="hint-title">📜 Registered Archive Credentials</div>
+              <div>Student: <code>student1</code> / <code>student123</code></div>
+              <div>Faculty: <code>faculty1</code> / <code>faculty123</code></div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 2. DASHBOARD SECTION (3D SHELVES & LEDGERS) -->
+      <section id="dashboard-section" class="hidden">
+        <!-- Top Curator / Scholar Bar -->
+        <div class="curator-bar parchment-strip">
+          <div class="scholar-badge">
+            <div class="scholar-avatar">📖</div>
+            <div class="scholar-details">
+              <h3 id="welcome-message">Welcome, Scholar Eleanor Vance</h3>
+              <div class="status-tags">
+                <span id="role-label" class="vintage-pill">Role: Student</span>
+                <span id="active-borrow-count" class="vintage-pill count-pill">2 Volumes in Possession</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="curator-actions">
+            <div class="quick-switch-wrapper" style="display: flex; align-items: center; gap: 6px;">
+              <label for="quick-role-select" style="font-family: var(--font-display); font-size: 0.72rem; color: var(--brass-bright); margin: 0; text-transform: uppercase;">Active Profile:</label>
+              <select id="quick-role-select" class="vintage-select-sm" style="max-width: 200px; padding: 4px 8px; font-size: 0.82rem; background: #201108; color: var(--parchment-light); border-color: var(--brass-gold);">
+                <option value="student1">🎓 Student (Eleanor)</option>
+                <option value="faculty1">🏛️ Faculty (Dr. Finch)</option>
+              </select>
+            </div>
+            <button id="logout-button" class="btn-vintage-sm btn-wood" title="Sign out or switch accounts">
+              <span>🚪 Sign Out / Desk</span>
+            </button>
+            <button id="sound-toggle" class="btn-vintage-sm" title="Toggle tactile library audio">
+              🔊 <span id="sound-label">Audio: On</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="library-tabs">
+          <button data-panel="catalog-panel" class="tab-btn active">
+            <span class="tab-icon">📚</span>
+            <span class="tab-title">The Grand Stacks (3D)</span>
+          </button>
+          <button data-panel="borrowed-panel" class="tab-btn">
+            <span class="tab-icon">🕯️</span>
+            <span class="tab-title">My Study Desk</span>
+          </button>
+          <button data-panel="request-panel" class="tab-btn">
+            <span class="tab-icon">📜</span>
+            <span class="tab-title">Loan Requisitions</span>
+          </button>
+          <button data-panel="manage-panel" class="tab-btn faculty-only">
+            <span class="tab-icon">⚖️</span>
+            <span class="tab-title">Curator's Ledger</span>
+          </button>
+        </nav>
+
+        <!-- PANEL 1: 3D BOOKSHELF & CATALOG -->
+        <section id="catalog-panel" class="panel active-panel">
+          <!-- Control Console -->
+          <div class="stack-controls parchment-card">
+            <!-- Search Bar -->
+            <div class="search-box-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-catalog" placeholder="Search across 80+ public domain volumes by title, author, genre..." />
+              <button id="clear-search" class="clear-btn hidden" title="Clear search">✕</button>
+            </div>
+
+            <!-- Genre Selector Ribbon -->
+            <div class="genre-selector-ribbon">
+              <button class="genre-btn active" data-genre="all">
+                <span>🏛️ All Stacks</span>
+                <span class="genre-count" id="count-all">80</span>
+              </button>
+              <button class="genre-btn" data-genre="scifi">
+                <span>🧪 Science Fiction</span>
+                <span class="genre-count" id="count-scifi">20</span>
+              </button>
+              <button class="genre-btn" data-genre="comedy">
+                <span>🎭 Comedy & Satire</span>
+                <span class="genre-count" id="count-comedy">20</span>
+              </button>
+              <button class="genre-btn" data-genre="education">
+                <span>🎓 Education & Science</span>
+                <span class="genre-count" id="count-education">20</span>
+              </button>
+              <button class="genre-btn" data-genre="comics">
+                <span>📚 Comics & Serials</span>
+                <span class="genre-count" id="count-comics">20</span>
+              </button>
+            </div>
+
+            <div class="stack-filters">
+              <div class="view-toggle-group">
+                <button id="view-3d-btn" class="toggle-btn active" title="3D Realistic Bookshelf Stacks">
+                  <span>📚 3D Shelves</span>
+                </button>
+                <button id="view-ledger-btn" class="toggle-btn" title="Traditional Card Catalog Ledger">
+                  <span>📑 Card Index</span>
+                </button>
+              </div>
+
+              <div class="filter-count" id="shelf-stats">
+                Displaying <strong>80</strong> rare volumes
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D BOOKSHELF VIEW CONTAINER -->
+          <div id="bookshelf-viewport" class="bookshelf-viewport">
+            <div class="bookshelf-cabinet">
+              <div class="cabinet-crown">
+                <div class="crown-ornament" id="cabinet-section-title">✦ GRAND ARCHIVES • ALL SECTIONS ✦</div>
+              </div>
+
+              <!-- Shelf Tier 1 -->
+              <div class="shelf-tier" id="shelf-tier-1">
+                <div class="shelf-brass-plaque" id="plaque-tier-1">TIER I • FOUNDATIONAL MASTERWORKS</div>
+                <div class="shelf-row" id="shelf-row-1"></div>
+                <div class="shelf-wood-beam">
+                  <div class="beam-depth"></div>
+                  <div class="beam-lip"></div>
+                </div>
+              </div>
+
+              <!-- Shelf Tier 2 -->
+              <div class="shelf-tier" id="shelf-tier-2">
+                <div class="shelf-brass-plaque" id="plaque-tier-2">TIER II • CLASSICAL DISCOVERIES & HUMOR</div>
+                <div class="shelf-row" id="shelf-row-2"></div>
+                <div class="shelf-wood-beam">
+                  <div class="beam-depth"></div>
+                  <div class="beam-lip"></div>
+                </div>
+              </div>
+
+              <!-- Shelf Tier 3 -->
+              <div class="shelf-tier" id="shelf-tier-3">
+                <div class="shelf-brass-plaque" id="plaque-tier-3">TIER III • PHILOSOPHIES & GRAPHIC SERIALS</div>
+                <div class="shelf-row" id="shelf-row-3"></div>
+                <div class="shelf-wood-beam">
+                  <div class="beam-depth"></div>
+                  <div class="beam-lip"></div>
+                </div>
+              </div>
+
+              <div class="cabinet-base">
+                <div class="base-wood"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ALTERNATE VIEW: CARD CATALOG LEDGER -->
+          <div id="catalog-ledger-view" class="catalog-ledger-view hidden">
+            <div class="parchment-card">
+              <h3 class="vintage-subheading">Public Domain Master Catalog & Accession Records</h3>
+              <div id="catalog-list" class="ledger-table"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANEL 2: BORROWED BOOKS / MY STUDY DESK -->
+        <section id="borrowed-panel" class="panel">
+          <div class="parchment-card desk-view">
+            <div class="card-brass-plate">
+              <span>SCHOLAR'S PRIVATE STUDY DESK</span>
+            </div>
+            <div class="desk-intro">
+              <h3 class="vintage-subheading">Volumes Currently in Your Custody</h3>
+              <p>Click on any tome on your study desk to open and read the complete book in the 3D vintage reader, or download it for offline study.</p>
+            </div>
+
+            <!-- Mini 3D Desk Shelf -->
+            <div class="study-desk-shelf">
+              <div class="desk-wood-surface">
+                <div class="desk-reading-lamp">🕯️</div>
+                <div class="desk-books-container" id="study-desk-books"></div>
+              </div>
+            </div>
+
+            <div class="desk-ledger-list">
+              <h4 class="vintage-subheading-sm">Loan Registration Cards & Reading Slips</h4>
+              <div id="borrowed-list" class="ledger-table"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PANEL 3: LOAN REQUESTS -->
+        <section id="request-panel" class="panel">
+          <div class="parchment-card">
+            <div class="card-brass-plate">
+              <span>SPECIAL ARCHIVE LOAN REQUISITIONS</span>
+            </div>
+            <div class="requests-intro">
+              <h3 class="vintage-subheading">Requisition Slips & Authorization Records</h3>
+              <p id="request-intro-text">Loan requests submitted for faculty librarian approval.</p>
+            </div>
+            <div id="request-list" class="ledger-table"></div>
+          </div>
+        </section>
+
+        <!-- PANEL 4: FACULTY CURATOR'S DESK -->
+        <section id="manage-panel" class="panel faculty-only">
+          <div class="manage-layout">
+            <div class="parchment-card accession-card">
+              <div class="card-brass-plate">
+                <span>NEW VOLUME ACCESSION REGISTER</span>
+              </div>
+              <h3 class="vintage-subheading">Catalog a New Tome into the Stacks</h3>
+              <form id="add-book-form" class="vintage-form">
+                <div class="form-group">
+                  <label for="book-title">Volume Title</label>
+                  <input type="text" id="book-title" placeholder="e.g. The Moon and Sixpence" required />
+                </div>
+                <div class="form-group">
+                  <label for="book-author">Author / Scribe</label>
+                  <input type="text" id="book-author" placeholder="e.g. W. Somerset Maugham" required />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="book-genre">Archive Section</label>
+                    <select id="book-genre">
+                      <option value="scifi">🧪 Science Fiction</option>
+                      <option value="comedy">🎭 Comedy & Satire</option>
+                      <option value="education">🎓 Education & Science</option>
+                      <option value="comics">📚 Golden Age Comics</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="book-year">Year of Publication</label>
+                    <input type="number" id="book-year" value="1919" required />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="book-copies">Number of Physical Copies</label>
+                    <input type="number" id="book-copies" min="1" max="10" value="3" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="book-cover">Leather Binding Style</label>
+                    <select id="book-cover">
+                      <option value="leather-burgundy">Burgundy Morocco Leather</option>
+                      <option value="leather-brown">Walnut Brown Calfskin</option>
+                      <option value="leather-navy">Midnight Navy Binding</option>
+                      <option value="leather-green">Forest Green Levant</option>
+                      <option value="leather-black">Obsidian Pigskin</option>
+                      <option value="leather-cognac">Cognac Gold Tooled</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="book-synopsis">Volume Abstract / Synopsis</label>
+                  <textarea id="book-synopsis" rows="3" placeholder="Enter historical overview and subject matter..."></textarea>
+                </div>
+                <button type="submit" class="btn-vintage btn-brass" style="width: 100%;">
+                  <span>✦ Bind & Place on Shelf</span>
+                </button>
+              </form>
+            </div>
+
+            <div class="parchment-card ledger-management-card">
+              <div class="card-brass-plate">
+                <span>CIRCULATION MASTER LEDGER</span>
+              </div>
+              <div id="manage-list" class="ledger-table"></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- 3. 3D BOOK INSPECTION MODAL -->
+    <div id="book-modal-backdrop" class="modal-backdrop hidden">
+      <div class="parchment-card book-inspection-card">
+        <button id="close-modal-btn" class="close-modal-btn" title="Close (Esc)">✕</button>
+        <div class="card-brass-plate">
+          <span>VOLUME INSPECTION DESK</span>
+        </div>
+
+        <div class="inspection-layout">
+          <!-- 3D Large Book Model -->
+          <div class="modal-book-stage">
+            <div id="modal-book-model" class="book-3d-large leather-burgundy">
+              <div class="modal-cover-inner">
+                <div class="modal-cover-ornament">✦ ✦ ✦</div>
+                <h3 class="modal-cover-title" id="modal-cover-title">Frankenstein</h3>
+                <p class="modal-cover-author" id="modal-cover-author">Mary Shelley</p>
+                <div class="modal-spine-emboss" id="modal-spine-title">Frankenstein</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Circulation Record Slip -->
+          <div class="modal-info-slip">
+            <div class="circulation-slip">
+              <div class="slip-header">
+                <span>ATHENAEUM SPECIAL ACCESSION</span>
+                <span id="modal-accession-id">#ATH-0101</span>
+              </div>
+              
+              <h2 class="vintage-heading" id="modal-detail-title" style="text-align: left; font-size: 1.6rem; margin-bottom: 2px;">Frankenstein</h2>
+              <p class="slip-author" style="font-family: var(--font-display); font-size: 0.85rem; color: var(--ink-sepia); margin-bottom: 8px;">
+                Authored by: <strong id="modal-detail-author">Mary Wollstonecraft Shelley</strong>
+              </p>
+
+              <div class="slip-metadata" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.92rem; border-top: 1px dashed var(--parchment-border); border-bottom: 1px dashed var(--parchment-border); padding: 8px 0; margin: 8px 0;">
+                <div>Section: <strong id="modal-detail-genre">🧪 Science Fiction</strong></div>
+                <div>Year: <strong id="modal-detail-year">1818</strong></div>
+                <div>Holdings: <strong id="modal-detail-copies">4 Volumes</strong></div>
+                <div>Classification: <strong>Public Domain (Free)</strong></div>
+              </div>
+
+              <div class="slip-synopsis">
+                <p id="modal-synopsis-text">A young scientist creates a sentient creature in an unorthodox scientific experiment, unleashing unintended consequences.</p>
+              </div>
+
+              <div class="slip-status-stamp">
+                <div id="modal-stamp" class="vintage-stamp stamp-available">AVAILABLE</div>
+              </div>
+
+              <div class="slip-barcode" style="font-family: var(--font-stamp); font-size: 0.78rem; color: var(--ink-faded); margin-top: 10px;">
+                ARCHIVE BARCODE: <span id="modal-barcode-num">0948-0101-1894</span>
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <button id="modal-read-btn" class="btn-vintage btn-brass" style="flex: 1.2;">
+                <span>📖 Open & Read Volume</span>
+              </button>
+              <button id="modal-borrow-btn" class="btn-vintage btn-wood" style="flex: 1;">
+                <span id="modal-borrow-text">Borrow Volume</span>
+              </button>
+              <button id="modal-request-btn" class="btn-vintage btn-wood hidden" style="flex: 1;">
+                <span>Submit Loan Requisition</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 3D OPEN BOOK DUAL-PAGE READER MODAL -->
+    <div id="open-book-modal" class="modal-backdrop hidden">
+      <div class="open-book-modal-stage">
+        <div class="reader-leather-binding" id="reader-leather-binding">
+          <button id="close-reader-btn" class="close-modal-btn" title="Close Book (Esc)">✕</button>
+
+          <!-- Top Reader Controls Toolbar -->
+          <div class="reader-top-bar">
+            <div class="reader-book-info">
+              <h2 id="reader-title">Frankenstein; or, The Modern Prometheus</h2>
+              <span class="reader-author" id="reader-author">BY MARY WOLLSTONECRAFT SHELLEY • 1818</span>
+            </div>
+
+            <div class="reader-controls-toolbar">
+              <div class="chapter-selector">
+                <select id="chapter-select" title="Jump to Chapter">
+                  <option value="0">Letter I - St. Petersburgh</option>
+                </select>
+              </div>
+
+              <div class="font-size-adjuster">
+                <button id="font-decrease-btn" class="font-btn" title="Decrease Font Size">A-</button>
+                <button id="font-normal-btn" class="font-btn active" title="Normal Font Size">A</button>
+                <button id="font-increase-btn" class="font-btn" title="Increase Font Size">A+</button>
+              </div>
+
+              <button id="download-ebook-btn" class="btn-vintage-sm btn-brass" title="Download entire book as plain text (.txt)">
+                <span>📥 Download eBook (.txt)</span>
+              </button>
+
+              <a id="gutenberg-ext-link" href="https://www.gutenberg.org/" target="_blank" rel="noopener noreferrer" class="btn-vintage-sm btn-wood" title="View on Official Public Domain Archives">
+                <span>🌐 Public Domain Source</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Dual Page Spread Stage -->
+          <div class="open-pages-spread">
+            <div class="center-spine-crease"></div>
+
+            <!-- Left Page -->
+            <div class="parchment-page page-left" id="page-left-container">
+              <div class="page-header">
+                <span class="book-header-title" id="page-left-header">FRANKENSTEIN</span>
+                <span class="chapter-header-title" id="page-left-chapter-name">LETTER I</span>
+              </div>
+              <div class="page-body font-md" id="page-left-content"></div>
+              <div class="page-footer">
+                <span class="page-number" id="page-left-num">Page 1</span>
+              </div>
+            </div>
+
+            <!-- Right Page -->
+            <div class="parchment-page page-right" id="page-right-container">
+              <div class="page-header">
+                <span class="chapter-header-title" id="page-right-chapter-name">LETTER I</span>
+                <span class="book-header-title" id="page-right-header">MARY SHELLEY</span>
+              </div>
+              <div class="page-body font-md" id="page-right-content"></div>
+              <div class="page-footer">
+                <span class="page-number" id="page-right-num">Page 2</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Page Navigation Buttons -->
+        <div class="reader-bottom-nav">
+          <button id="prev-page-btn" class="btn-vintage btn-wood btn-nav">
+            <span>⮜ Turn to Previous Pages</span>
+          </button>
+          <div class="reading-progress-text" id="reader-progress-info">
+            Spread 1 of 2 • Chapter 1
+          </div>
+          <button id="next-page-btn" class="btn-vintage btn-brass btn-nav">
+            <span>Turn to Next Pages ⮞</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="library-toast" class="library-toast hidden">
+      <div class="toast-seal">✦</div>
+      <div class="toast-message" id="toast-message">Notification text</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="library-footer">
+      <p>The Grand Athenaeum Library Management System • Multi-Genre Stacks & 3D Interactive Open Book Reader</p>
+      <p class="footer-note">Curated Public Domain Masterpieces from Project Gutenberg & Comic Book Plus • 80+ Volumes</p>
+    </footer>
+  </div>
+
+  <script src="books-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
